@@ -220,23 +220,7 @@ public class MecanumWheelTeleopStudio extends LinearOpMode{
                 }
 
             }
-            //fast test shooter
-            if (FLY_WHEEL == true) {
-                if (gamepad1.x) {
-                    sleep(300);
-                    for (int i = 0; i <= 5; i++) {
-                        if(servo1.getPosition() == servoInitPos){
-                            servo1.setPosition(servoEndPos);
-                        }
-                        if(servo1.getPosition() == servoEndPos){
-                            servo1.setPosition(servoInitPos);
-                        }
-                    }
-                    sleep(500);
-                    shooter.setPower(0);
-                    FLY_WHEEL = false;
-                }
-            }
+
 
 
             if (shooter.getVelocity() == initVelocity){
