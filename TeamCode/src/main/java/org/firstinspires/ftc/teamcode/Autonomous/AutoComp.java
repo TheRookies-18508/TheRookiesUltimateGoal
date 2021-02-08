@@ -1,3 +1,5 @@
+//Basic Auto
+//shoots 3 rings into top tower, drops wobble and parks
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
