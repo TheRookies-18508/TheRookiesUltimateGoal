@@ -32,6 +32,7 @@ public class AssetsTrajectoryManager {
         }
     }
 
+
     /**
      * Loads a trajectory config with the given name.
      */
