@@ -33,6 +33,7 @@ public class MecanumWheelTeleopStudio extends LinearOpMode{
     DcMotor bottomright = null;
     DcMotorEx intake = null;
     DcMotor intake2 = null;
+    DcMotor intake3 = null;
     CRServo testservo = null;
     public Servo servo1 = null;
     public DcMotorEx shooter = null;
@@ -77,6 +78,7 @@ public class MecanumWheelTeleopStudio extends LinearOpMode{
         intake = hardwareMap.get(DcMotorEx.class, "intake");
         intake2 = hardwareMap.get(DcMotor.class, "intake2");
         shooter = hardwareMap.get(DcMotorEx.class, "shooter");
+        intake3 = hardwareMap.get(DcMotorEx.class, "intake3");
         servo1 = hardwareMap.servo.get("Servo1");
 //        testservo = hardwareMap.crservo.get("testservo");
 
@@ -149,6 +151,7 @@ public class MecanumWheelTeleopStudio extends LinearOpMode{
                 intake.setPower(1);
                 // intake.setVelocity(100);
                 intake2.setPower(-1);
+                intake3.setPower(.5);
                 shooter.setVelocity(-400);
                 INTAKE = true;
                 //INTAKE_SPEED = .6;
@@ -162,6 +165,7 @@ public class MecanumWheelTeleopStudio extends LinearOpMode{
             if (gamepad1.left_trigger > .2){
                 intake.setPower(0);
                 intake2.setPower(0);
+                intake3.setPower(0);
                 shooter.setVelocity(0);
                 INTAKE = false;
                 INTAKE_SPEED = .8;
@@ -183,6 +187,7 @@ public class MecanumWheelTeleopStudio extends LinearOpMode{
                 INTAKE_SPEED = .6;
                 intake.setPower(0);
                 intake2.setPower(0);
+                intake3.setPower(0);
                 INTAKE = false;
 
             } else if (gamepad1.left_bumper) {
