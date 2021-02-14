@@ -94,6 +94,7 @@ public class MecanumWheelTeleopStudio extends LinearOpMode{
         topright.setDirection(DcMotor.Direction.FORWARD);
         bottomleft.setDirection(DcMotor.Direction.REVERSE);
         bottomright.setDirection(DcMotor.Direction.FORWARD);
+        intake3.setDirection(DcMotor.Direction.REVERSE);
 
         intake.setDirection(DcMotor.Direction.FORWARD);
         intake2.setDirection(DcMotor.Direction.FORWARD);
@@ -151,7 +152,7 @@ public class MecanumWheelTeleopStudio extends LinearOpMode{
                 intake.setPower(1);
                 // intake.setVelocity(100);
                 intake2.setPower(-1);
-                intake3.setPower(.5);
+                intake3.setPower(1);
                 shooter.setVelocity(-400);
                 INTAKE = true;
                 //INTAKE_SPEED = .6;
@@ -161,6 +162,7 @@ public class MecanumWheelTeleopStudio extends LinearOpMode{
                 intake.setPower(-1);
                 // intake.setVelocity(100);
                 intake2.setPower(1);
+                intake3.setPower(-.4);
             }
             if (gamepad1.left_trigger > .2){
                 intake.setPower(0);
