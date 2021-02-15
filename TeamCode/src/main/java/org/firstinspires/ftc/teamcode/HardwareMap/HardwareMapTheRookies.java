@@ -77,6 +77,7 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
 
     public Servo servo1 = null;
     public Servo armServo = null;
+    public Servo servoArm = null;
     static final double THRESHOLD = 1.5;
     BNO055IMU imu;
 
@@ -133,6 +134,8 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
         shooter = hardwareMap.get(DcMotorEx.class, "shooter");
         servo1 = hardwareMap.servo.get("Servo1");
         armServo = hardwareMap.servo.get("testservo");
+        servoArm = hardwareMap.servo.get("servoArm");
+
         arm = hardwareMap.get(DcMotor.class, "arm");
 
 //Threshold for Gyro turning so that we will not continuously attempt to reach an exact value

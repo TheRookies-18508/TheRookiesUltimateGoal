@@ -34,8 +34,9 @@ public class MecanumWheelTeleopStudio extends LinearOpMode{
     DcMotorEx intake = null;
     DcMotor intake2 = null;
     DcMotor intake3 = null;
-    CRServo testservo = null;
+    Servo testservo = null;
     public Servo servo1 = null;
+    public Servo servoArm = null;
     public DcMotorEx shooter = null;
 
     public double vertical;
@@ -62,6 +63,14 @@ public class MecanumWheelTeleopStudio extends LinearOpMode{
         sleep(350);
         servo1.setPosition(1);
     }
+    public void pullup(){
+        testservo.setPosition(.6);
+        servoArm.setPosition(.8);
+    }
+    public void setDown(){
+        servoArm.setPosition(0);
+        testservo.setPosition(1);
+    }
 
 
     @Override
@@ -80,7 +89,8 @@ public class MecanumWheelTeleopStudio extends LinearOpMode{
         shooter = hardwareMap.get(DcMotorEx.class, "shooter");
         intake3 = hardwareMap.get(DcMotorEx.class, "intake3");
         servo1 = hardwareMap.servo.get("Servo1");
-//        testservo = hardwareMap.crservo.get("testservo");
+        servoArm = hardwareMap.servo.get("servoArm");
+        testservo = hardwareMap.servo.get("testservo");
 
         /*
         /makes the intake the front of the robot
@@ -94,7 +104,7 @@ public class MecanumWheelTeleopStudio extends LinearOpMode{
         topright.setDirection(DcMotor.Direction.FORWARD);
         bottomleft.setDirection(DcMotor.Direction.REVERSE);
         bottomright.setDirection(DcMotor.Direction.FORWARD);
-        intake3.setDirection(DcMotor.Direction.REVERSE);
+        intake3.setDirection(DcMotor.Direction.FORWARD);
 
         intake.setDirection(DcMotor.Direction.FORWARD);
         intake2.setDirection(DcMotor.Direction.FORWARD);
@@ -203,6 +213,12 @@ public class MecanumWheelTeleopStudio extends LinearOpMode{
                 shooter.setVelocity(motorVelocity);
                 FLY_WHEEL = true;
 
+            }
+            if (gamepad1.b){
+                pullup();
+            }
+            else if (gamepad1.x){
+                setDown();
             }
 
             //manual shooter
