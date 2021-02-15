@@ -469,18 +469,18 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
             bottomright.setPower((power + (error * k)));
             telemetry.addData("error: ", error);
 
-            telemetry.addData("topleft dest: ", topleftTarget);
-            telemetry.addData("topleft pos: ", topleft.getCurrentPosition());
-
-            telemetry.addData("topright dest: ", toprightTarget);
-            telemetry.addData("topright pos: ", topright.getCurrentPosition());
-
-            telemetry.addData("bottomleft dest: ", bottomleftTarget);
-            telemetry.addData("bottomleft pos: ", bottomleft.getCurrentPosition());
-
-
-            telemetry.addData("bottomright dest: ", bottomrightTarget);
-            telemetry.addData("bottomright pos: ", bottomright.getCurrentPosition());
+//            telemetry.addData("topleft dest: ", topleftTarget);
+//            telemetry.addData("topleft pos: ", topleft.getCurrentPosition());
+//
+//            telemetry.addData("topright dest: ", toprightTarget);
+//            telemetry.addData("topright pos: ", topright.getCurrentPosition());
+//
+//            telemetry.addData("bottomleft dest: ", bottomleftTarget);
+//            telemetry.addData("bottomleft pos: ", bottomleft.getCurrentPosition());
+//
+//
+//            telemetry.addData("bottomright dest: ", bottomrightTarget);
+//            telemetry.addData("bottomright pos: ", bottomright.getCurrentPosition());
 
             telemetry.update();
 
@@ -515,22 +515,22 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
             topright.setPower((power + (error * k))+.03);
             bottomleft.setPower((power - (error * k)));
             bottomright.setPower(-(power - (error * k)));
-            telemetry.addData("error: ", error);
-
-            telemetry.addData("topleft dest: ", topleftTarget);
-            telemetry.addData("topleft pos: ", topleft.getCurrentPosition());
-
-            telemetry.addData("topright dest: ", toprightTarget);
-            telemetry.addData("topright pos: ", topright.getCurrentPosition());
-
-            telemetry.addData("bottomleft dest: ", bottomleftTarget);
-            telemetry.addData("bottomleft pos: ", bottomleft.getCurrentPosition());
-
-
-            telemetry.addData("bottomright dest: ", bottomrightTarget);
-            telemetry.addData("bottomright pos: ", bottomright.getCurrentPosition());
-
-            telemetry.update();
+//            telemetry.addData("error: ", error);
+//
+//            telemetry.addData("topleft dest: ", topleftTarget);
+//            telemetry.addData("topleft pos: ", topleft.getCurrentPosition());
+//
+//            telemetry.addData("topright dest: ", toprightTarget);
+//            telemetry.addData("topright pos: ", topright.getCurrentPosition());
+//
+//            telemetry.addData("bottomleft dest: ", bottomleftTarget);
+//            telemetry.addData("bottomleft pos: ", bottomleft.getCurrentPosition());
+//
+//
+//            telemetry.addData("bottomright dest: ", bottomrightTarget);
+//            telemetry.addData("bottomright pos: ", bottomright.getCurrentPosition());
+//
+//            telemetry.update();
 
         }
         stopMotors();
@@ -624,13 +624,13 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
                     (runtime.seconds() < timeoutS) &&
                     (topleft.isBusy() && topright.isBusy() && bottomleft.isBusy() && bottomright.isBusy())) {
 
-                telemetry.addData("Path1",  "Running to %7d :%7d:%7d:%7d", newtopLeftTarget,  newtopRightTarget, newbottomLeftTarget, newbottomRightTarget);
-                telemetry.addData("Path2",  "Running at %7d :%7d:%7d:%7d",
-                        topleft.getCurrentPosition(),
-                        bottomleft.getCurrentPosition(),
-                        topright.getCurrentPosition(),
-                        bottomright.getCurrentPosition());
-                telemetry.update();
+//                telemetry.addData("Path1",  "Running to %7d :%7d:%7d:%7d", newtopLeftTarget,  newtopRightTarget, newbottomLeftTarget, newbottomRightTarget);
+//                telemetry.addData("Path2",  "Running at %7d :%7d:%7d:%7d",
+//                        topleft.getCurrentPosition(),
+//                        bottomleft.getCurrentPosition(),
+//                        topright.getCurrentPosition(),
+//                        bottomright.getCurrentPosition());
+//                telemetry.update();
             }
 
             // Stop all motion;

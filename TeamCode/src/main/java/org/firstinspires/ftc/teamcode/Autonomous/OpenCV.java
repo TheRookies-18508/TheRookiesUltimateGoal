@@ -98,7 +98,8 @@ public class OpenCV extends HardwareMapTheRookies
             telemetry.addData("Position", pipeline.position);
             telemetry.update();
             sleep(500);
-
+            telemetry.addData("Number of Rings", pipeline.position);
+            telemetry.update();
             if ((pipeline.position.toString()) == "NONE" && (pipeline.getAnalysis() > 0)){
                 telemetry.addData("Ring Pos", "NONE");
                 telemetry.update();
