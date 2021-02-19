@@ -39,8 +39,7 @@ public class TensorflowObjectTest extends LinearOpMode {
      * and paste it in to your code on the next line, between the double quotes.
      */
     private static final String VUFORIA_KEY =
-            " -- YOUR NEW VUFORIA KEY GOES HERE  --- ";
-
+            "AUoddv7/////AAABmdWoNVXEg09hhZk3YZfGMFsTIhkh2VwDTgEzX3nY+SV3FEUMCG4pHDYTDBEWUdsa5GcOyqevJQaXXHHHuK+8bmSKuV/WcO1oY5KIkFWC0IeN6RSmDYhCoadHTDLnrWZVb4b374j02ABfwSJgZyiuyWUrr0tbbnX/rOaxBoZ1/TyPsV8y0staXPbJKftaWVs1sxdvatjEI4DbiiFaTc5Amjlff+gUrr8GcWL/iuWi2azs8Wpr1KU7VtmazWx5nKW1qrnQFmcSoorGN2PxTYdEPJ4Y5dfx5PWcBMk47/1cH8+nCdbrbIGl5Om+QmKgKy3OabwWz4O5jJuC4g+bEMT4UR2JTvblEP9RFjf1KSo4TdS2";
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
