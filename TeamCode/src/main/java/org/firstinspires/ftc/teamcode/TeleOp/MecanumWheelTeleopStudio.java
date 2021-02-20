@@ -64,12 +64,13 @@ public class MecanumWheelTeleopStudio extends LinearOpMode{
         servo1.setPosition(1);
     }
     public void pullup(){
-        testservo.setPosition(.6);
-        servoArm.setPosition(.8);
+        servoArm.setPosition(.7);
+
+
     }
     public void setDown(){
         servoArm.setPosition(0);
-        testservo.setPosition(1);
+
     }
 
 
@@ -111,7 +112,7 @@ public class MecanumWheelTeleopStudio extends LinearOpMode{
 
 
         shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
         topleft = hardwareMap.dcMotor.get("topleft");
@@ -159,7 +160,7 @@ public class MecanumWheelTeleopStudio extends LinearOpMode{
 
             //intake
             if (gamepad1.right_trigger > .2){
-                intake.setPower(1);
+                intake.setPower(.80);
                 // intake.setVelocity(100);
                 intake2.setPower(-1);
                 intake3.setPower(1);
@@ -175,6 +176,32 @@ public class MecanumWheelTeleopStudio extends LinearOpMode{
                 intake3.setPower(-.4);
             }
             if (gamepad1.left_trigger > .2){
+                intake.setPower(0);
+                intake2.setPower(0);
+                intake3.setPower(0);
+                shooter.setVelocity(0);
+                INTAKE = false;
+                INTAKE_SPEED = .8;
+                FLY_WHEEL = false;
+            }
+            //gamepad 2
+            if (gamepad2.right_trigger > .2){
+                intake.setPower(.80);
+                // intake.setVelocity(100);
+                intake2.setPower(-1);
+                intake3.setPower(1);
+                shooter.setVelocity(-400);
+                INTAKE = true;
+                //INTAKE_SPEED = .6;
+            }
+
+            if (gamepad2.dpad_up){
+                intake.setPower(-1);
+                // intake.setVelocity(100);
+                intake2.setPower(1);
+                intake3.setPower(-.4);
+            }
+            if (gamepad2.left_trigger > .2){
                 intake.setPower(0);
                 intake2.setPower(0);
                 intake3.setPower(0);
@@ -220,10 +247,76 @@ public class MecanumWheelTeleopStudio extends LinearOpMode{
             else if (gamepad1.x){
                 setDown();
             }
+            else if (gamepad1.dpad_left){
+                testservo.setPosition(.6);
+            }
+            else if (gamepad1.dpad_down){
+                testservo.setPosition(1);
+            }
 
             //manual shooter
             if (FLY_WHEEL == true) {
                 if (gamepad1.a) {
+                    shoot();
+                    sleep(100);
+                }
+
+            }
+
+            //auto shooter stuff
+            if (FLY_WHEEL == true) {
+                if (gamepad1.y) {
+                    stopMotors();
+                    sleep(300);
+                    for (int i = 0; i <= 2; i++) {
+                        shoot();
+                        sleep(400);
+                    }
+                    sleep(500);
+                    shooter.setPower(0);
+                    FLY_WHEEL = false;
+                }
+
+            }
+            //gamepad 2 values
+            if (gamepad2.right_bumper) {
+                motorVelocity = initVelocity;
+                shooter.setVelocity(motorVelocity);
+                FLY_WHEEL = true;
+                INTAKE_SPEED = .6;
+                intake.setPower(0);
+                intake2.setPower(0);
+                intake3.setPower(0);
+                INTAKE = false;
+
+            } else if (gamepad2.left_bumper) {
+                shooter.setPower(0);
+                FLY_WHEEL = false;
+                INTAKE_SPEED = .8;
+            }
+
+            if (gamepad2.dpad_right){
+                motorVelocity = powershotVelocity;
+                shooter.setVelocity(motorVelocity);
+                FLY_WHEEL = true;
+
+            }
+            if (gamepad2.b){
+                pullup();
+            }
+            else if (gamepad2.x){
+                setDown();
+            }
+            else if (gamepad2.dpad_left){
+                testservo.setPosition(.6);
+            }
+            else if (gamepad2.dpad_down){
+                testservo.setPosition(1);
+            }
+
+            //manual shooter
+            if (FLY_WHEEL == true) {
+                if (gamepad2.a) {
                     shoot();
                     sleep(300);
                 }
@@ -232,7 +325,7 @@ public class MecanumWheelTeleopStudio extends LinearOpMode{
 
             //auto shooter stuff
             if (FLY_WHEEL == true) {
-                if (gamepad1.y) {
+                if (gamepad2.y) {
                     sleep(300);
                     for (int i = 0; i <= 2; i++) {
                         shoot();
@@ -268,5 +361,11 @@ public class MecanumWheelTeleopStudio extends LinearOpMode{
 
         }
 
+    }
+    public void stopMotors() {
+        topleft.setPower(0);
+        bottomleft.setPower(0);
+        topright.setPower(0);
+        bottomright.setPower(0);
     }
 }

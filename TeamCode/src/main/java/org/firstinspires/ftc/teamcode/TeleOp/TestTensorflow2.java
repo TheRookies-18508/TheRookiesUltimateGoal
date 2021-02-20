@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -9,29 +9,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Autonomous/TensorflowObjectTest_NEEDTOTEST.java
-<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Autonomous/TensorflowObjectTest.java
-import org.firstinspires.ftc.teamcode.HardwareMap.HardwareMapTheRookies;
-import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraFactory;
 
-
-import com.acmerobotics.dashboard.FtcDashboard;
-
-
-
-@Autonomous
-public class TensorflowObjectTest extends HardwareMapTheRookies {
-    private static final String TFOD_MODEL_ASSET = "/sdcard/FIRST/tflitemodels/model_unquant.tflite";
-    private static final String LABEL_FIRST_ELEMENT = "0_rings";
-    private static final String LABEL_SECOND_ELEMENT = "1_ring";
-    private static final String LABEL_THIRD_ELEMENT = "4_rings";
-    OpenCvCamera webcam;
-=======
-
-=======
-
->>>>>>> c68f9a4510d593887e8b1ebf4e1f4da5845d07fa:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Autonomous/TensorflowObjectTest.java
 /**
  * This 2020-2021 OpMode illustrates the basics of using the TensorFlow Object Detection API to
  * determine the position of the Ultimate Goal game elements.
@@ -42,15 +20,12 @@ public class TensorflowObjectTest extends HardwareMapTheRookies {
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@TeleOp(name = "Concept: TensorFlow Object Detection Webcam")
-public class TensorflowObjectTest_NEEDTOTEST extends LinearOpMode {
+@TeleOp
+
+public class TestTensorflow2 extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
     private static final String LABEL_FIRST_ELEMENT = "Quad";
     private static final String LABEL_SECOND_ELEMENT = "Single";
-<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Autonomous/TensorflowObjectTest_NEEDTOTEST.java
->>>>>>> c68f9a4510d593887e8b1ebf4e1f4da5845d07fa:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Autonomous/TensorflowObjectTest_NEEDTOTEST.java
-=======
->>>>>>> c68f9a4510d593887e8b1ebf4e1f4da5845d07fa:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Autonomous/TensorflowObjectTest.java
 
     /*
      * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
@@ -66,6 +41,7 @@ public class TensorflowObjectTest_NEEDTOTEST extends LinearOpMode {
      */
     private static final String VUFORIA_KEY =
             "AUoddv7/////AAABmdWoNVXEg09hhZk3YZfGMFsTIhkh2VwDTgEzX3nY+SV3FEUMCG4pHDYTDBEWUdsa5GcOyqevJQaXXHHHuK+8bmSKuV/WcO1oY5KIkFWC0IeN6RSmDYhCoadHTDLnrWZVb4b374j02ABfwSJgZyiuyWUrr0tbbnX/rOaxBoZ1/TyPsV8y0staXPbJKftaWVs1sxdvatjEI4DbiiFaTc5Amjlff+gUrr8GcWL/iuWi2azs8Wpr1KU7VtmazWx5nKW1qrnQFmcSoorGN2PxTYdEPJ4Y5dfx5PWcBMk47/1cH8+nCdbrbIGl5Om+QmKgKy3OabwWz4O5jJuC4g+bEMT4UR2JTvblEP9RFjf1KSo4TdS2";
+
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
@@ -82,12 +58,8 @@ public class TensorflowObjectTest_NEEDTOTEST extends LinearOpMode {
     public void runOpMode() {
         // The TFObjectDetector uses the camera frames from the VuforiaLocalizer, so we create that
         // first.
-//        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
-//        FtcDashboard.getInstance().startCameraStream(webcam, 24);
-
         initVuforia();
         initTfod();
-
 
         /**
          * Activate TensorFlow Object Detection before we wait for the start command.
@@ -120,16 +92,14 @@ public class TensorflowObjectTest_NEEDTOTEST extends LinearOpMode {
                     List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
                     if (updatedRecognitions != null) {
                         telemetry.addData("# Object Detected", updatedRecognitions.size());
+                        // step through the list of recognitions and display boundary info.
                         int i = 0;
                         for (Recognition recognition : updatedRecognitions) {
-                            telemetry.addData("Test", "HELLO");
                             telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
                             telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
                                     recognition.getLeft(), recognition.getTop());
                             telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
                                     recognition.getRight(), recognition.getBottom());
-                            telemetry.update();
-
                         }
                         telemetry.update();
                     }
@@ -154,8 +124,6 @@ public class TensorflowObjectTest_NEEDTOTEST extends LinearOpMode {
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
         parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
 
-
-
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
@@ -171,15 +139,6 @@ public class TensorflowObjectTest_NEEDTOTEST extends LinearOpMode {
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         tfodParameters.minResultConfidence = 0.8f;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
-<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Autonomous/TensorflowObjectTest_NEEDTOTEST.java
-<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Autonomous/TensorflowObjectTest.java
-//        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
-        tfod.loadModelFromFile (TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT, LABEL_THIRD_ELEMENT);
-=======
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
->>>>>>> c68f9a4510d593887e8b1ebf4e1f4da5845d07fa:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Autonomous/TensorflowObjectTest_NEEDTOTEST.java
-=======
-        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
->>>>>>> c68f9a4510d593887e8b1ebf4e1f4da5845d07fa:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Autonomous/TensorflowObjectTest.java
     }
 }

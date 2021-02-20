@@ -1,172 +1,107 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
-/* Copyright (c) 2019 FIRST. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted (subject to the limitations in the disclaimer below) provided that
- * the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice, this list
- * of conditions and the following disclaimer.
- *
- * Redistributions in binary form must reproduce the above copyright notice, this
- * list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution.
- *
- * Neither the name of FIRST nor the names of its contributors may be used to endorse or
- * promote products derived from this software without specific prior written permission.
- *
- * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
- * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import java.util.List;
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaCurrentGame;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.robotcore.external.tfod.TfodCurrentGame;
+import org.firstinspires.ftc.teamcode.tfod.TfodInit;
 
-/**
- * This 2020-2021 OpMode illustrates the basics of using the TensorFlow Object Detection API to
- * determine the position of the Ultimate Goal game elements.
- *
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
- *
- * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
- * is explained below.
- */
-
+@TeleOp
 public class TestTensorflow extends LinearOpMode {
-    private static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
-    private static final String LABEL_FIRST_ELEMENT = "Quad";
-    private static final String LABEL_SECOND_ELEMENT = "Single";
 
-    /*
-     * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
-     * 'parameters.vuforiaLicenseKey' is initialized is for illustration only, and will not function.
-     * A Vuforia 'Development' license key, can be obtained free of charge from the Vuforia developer
-     * web site at https://developer.vuforia.com/license-manager.
-     *
-     * Vuforia license keys are always 380 characters long, and look as if they contain mostly
-     * random data. As an example, here is a example of a fragment of a valid key:
-     *      ... yIgIzTqZ4mWjk9wd3cZO9T1axEqzuhxoGlfOOI2dRzKS4T0hQ8kT ...
-     * Once you've obtained a license key, copy the string from the Vuforia web site
-     * and paste it in to your code on the next line, between the double quotes.
-     */
-    private static final String VUFORIA_KEY =
-            "AUoddv7/////AAABmdWoNVXEg09hhZk3YZfGMFsTIhkh2VwDTgEzX3nY+SV3FEUMCG4pHDYTDBEWUdsa5GcOyqevJQaXXHHHuK+8bmSKuV/WcO1oY5KIkFWC0IeN6RSmDYhCoadHTDLnrWZVb4b374j02ABfwSJgZyiuyWUrr0tbbnX/rOaxBoZ1/TyPsV8y0staXPbJKftaWVs1sxdvatjEI4DbiiFaTc5Amjlff+gUrr8GcWL/iuWi2azs8Wpr1KU7VtmazWx5nKW1qrnQFmcSoorGN2PxTYdEPJ4Y5dfx5PWcBMk47/1cH8+nCdbrbIGl5Om+QmKgKy3OabwWz4O5jJuC4g+bEMT4UR2JTvblEP9RFjf1KSo4TdS2";
+    private VuforiaCurrentGame vuforiaUltimateGoal;
+    private TfodCurrentGame tfodUltimateGoal;
+
+    Recognition recognition;
 
     /**
-     * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
-     * localization engine.
+     * This function is executed when this Op Mode is selected from the Driver Station.
      */
-    private VuforiaLocalizer vuforia;
-
-    /**
-     * {@link #tfod} is the variable we will use to store our instance of the TensorFlow Object
-     * Detection engine.
-     */
-    private TFObjectDetector tfod;
-
     @Override
     public void runOpMode() {
-        // The TFObjectDetector uses the camera frames from the VuforiaLocalizer, so we create that
-        // first.
-        initVuforia();
-        initTfod();
+        List<Recognition> recognitions;
+        double index;
 
-        /**
-         * Activate TensorFlow Object Detection before we wait for the start command.
-         * Do it here so that the Camera Stream window will have the TensorFlow annotations visible.
-         **/
-        if (tfod != null) {
-            tfod.activate();
+        vuforiaUltimateGoal = new VuforiaCurrentGame();
+        tfodUltimateGoal = new TfodCurrentGame();
 
-            // The TensorFlow software will scale the input images from the camera to a lower resolution.
-            // This can result in lower detection accuracy at longer distances (> 55cm or 22").
-            // If your target is at distance greater than 50 cm (20") you can adjust the magnification value
-            // to artificially zoom in to the center of image.  For best results, the "aspectRatio" argument
-            // should be set to the value of the images used to create the TensorFlow Object Detection model
-            // (typically 1.78 or 16/9).
-
-            // Uncomment the following line if you want to adjust the magnification and/or the aspect ratio of the input images.
-            //tfod.setZoom(2.5, 1.78);
-        }
-
-        /** Wait for the game to begin */
-        telemetry.addData(">", "Press Play to start op mode");
+        // Sample TFOD Op Mode
+        // Initialize Vuforia.
+        vuforiaUltimateGoal.initialize(
+                "AUoddv7/////AAABmdWoNVXEg09hhZk3YZfGMFsTIhkh2VwDTgEzX3nY+SV3FEUMCG4pHDYTDBEWUdsa5GcOyqevJQaXXHHHuK+8bmSKuV/WcO1oY5KIkFWC0IeN6RSmDYhCoadHTDLnrWZVb4b374j02ABfwSJgZyiuyWUrr0tbbnX/rOaxBoZ1/TyPsV8y0staXPbJKftaWVs1sxdvatjEI4DbiiFaTc5Amjlff+gUrr8GcWL/iuWi2azs8Wpr1KU7VtmazWx5nKW1qrnQFmcSoorGN2PxTYdEPJ4Y5dfx5PWcBMk47/1cH8+nCdbrbIGl5Om+QmKgKy3OabwWz4O5jJuC4g+bEMT4UR2JTvblEP9RFjf1KSo4TdS2", // vuforiaLicenseKey
+                hardwareMap.get(WebcamName.class, "Webcam 1"), // cameraName
+                "", // webcamCalibrationFilename
+                false, // useExtendedTracking
+                false, // enableCameraMonitoring
+                VuforiaLocalizer.Parameters.CameraMonitorFeedback.AXES, // cameraMonitorFeedback
+                0, // dx
+                0, // dy
+                0, // dz
+                0, // xAngle
+                0, // yAngle
+                0, // zAngle
+                true); // useCompetitionFieldTargetLocations
+        // Set min confidence threshold to 0.7
+        tfodUltimateGoal.initialize(vuforiaUltimateGoal, 0.7F, true, true);
+        // Initialize TFOD before waitForStart.
+        // Init TFOD here so the object detection labels are visible
+        // in the Camera Stream preview window on the Driver Station.
+        tfodUltimateGoal.activate();
+        // Enable following block to zoom in on target.
+        telemetry.addData(">", "Press Play to start");
         telemetry.update();
+        // Wait for start command from Driver Station.
         waitForStart();
-
         if (opModeIsActive()) {
+            // Put run blocks here.
             while (opModeIsActive()) {
-                if (tfod != null) {
-                    // getUpdatedRecognitions() will return null if no new information is available since
-                    // the last time that call was made.
-                    List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-                    if (updatedRecognitions != null) {
-                        telemetry.addData("# Object Detected", updatedRecognitions.size());
-                        // step through the list of recognitions and display boundary info.
-                        int i = 0;
-                        for (Recognition recognition : updatedRecognitions) {
-                            telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                            telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                                    recognition.getLeft(), recognition.getTop());
-                            telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                                    recognition.getRight(), recognition.getBottom());
-                        }
-                        telemetry.update();
+                // Put loop blocks here.
+                // Get a list of recognitions from TFOD.
+                recognitions = tfodUltimateGoal.getRecognitions();
+                // If list is empty, inform the user. Otherwise, go
+                // through list and display info for each recognition.
+                if (recognitions.size() == 0) {
+                    telemetry.addData("TFOD", "No items detected.");
+                } else {
+                    index = 0;
+                    // Iterate through list and call a function to
+                    // display info for each recognized object.
+                    for (Recognition recognition : recognitions) {
+                        // Display info.
+                        displayInfo(index);
+                        // Increment index.
+                        index = index + 1;
                     }
                 }
+                telemetry.update();
             }
         }
+        // Deactivate TFOD.
+        tfodUltimateGoal.deactivate();
 
-        if (tfod != null) {
-            tfod.shutdown();
-        }
+        vuforiaUltimateGoal.close();
+        tfodUltimateGoal.close();
     }
 
     /**
-     * Initialize the Vuforia localization engine.
+     * Display info (using telemetry) for a recognized object.
      */
-    private void initVuforia() {
-        /*
-         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
-         */
-        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
-
-        parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
-
-        //  Instantiate the Vuforia engine
-        vuforia = ClassFactory.getInstance().createVuforia(parameters);
-
-        // Loading trackables is not necessary for the TensorFlow Object Detection engine.
-    }
-
-    /**
-     * Initialize the TensorFlow Object Detection engine.
-     */
-    private void initTfod() {
-        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
-                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minResultConfidence = 0.8f;
-        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
-        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
+    private void displayInfo(double i) {
+        // Display label info.
+        // Display the label and index number for the recognition.
+        telemetry.addData("label " + i, recognition.getLabel());
+        // Display upper corner info.
+        // Display the location of the top left corner
+        // of the detection boundary for the recognition
+        telemetry.addData("Left, Top " + i, recognition.getLeft() + ", " + recognition.getTop());
+        // Display lower corner info.
+        // Display the location of the bottom right corner
+        // of the detection boundary for the recognition
+        telemetry.addData("Right, Bottom " + i, recognition.getRight() + ", " + recognition.getBottom());
     }
 }

@@ -104,10 +104,10 @@ public class OpenCV extends HardwareMapTheRookies
                 telemetry.addData("Ring Pos", "NONE");
                 telemetry.update();
                 shootTop();
-                moveForwardEncoder(.7, 3);
+                moveForwardEncoder(1, 3);//.7
                 sleep(1000);
-                strafeRightEncoder(.5, 12);
-                gyroTurn(.2, 30);
+                strafeRightEncoder(1, 12);//.5
+                gyroTurn(1, 30);//.2
                 sleep(1000);
                 sleep(1000);
 
@@ -117,7 +117,7 @@ public class OpenCV extends HardwareMapTheRookies
                 hold();
                 sleep(1000);
 
-                strafeLeft(.4,15);
+                strafeLeft(1,15);//.5
                 servoArm.setPosition(0);
                 sleep(1000);
                 break;
@@ -126,9 +126,9 @@ public class OpenCV extends HardwareMapTheRookies
                 telemetry.addData("Ring Pos", "ONE");
                 telemetry.update();
                 shootTop();
-                moveForwardEncoder(.4, 28);
+                moveForwardEncoder(.4, 24);
                 sleep(1000);
-                strafeLeft(.4,4);
+                strafeLeft(.4,8);
                 sleep(1000);
                 dropWobble_park();
 
