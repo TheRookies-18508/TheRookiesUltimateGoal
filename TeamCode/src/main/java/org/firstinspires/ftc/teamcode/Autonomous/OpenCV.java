@@ -112,13 +112,13 @@ public class OpenCV extends HardwareMapTheRookies
                 sleep(1000);
 
 
-                arm.setPower(.35);
+                servoArm.setPosition(.7);
                 sleep(500);
                 hold();
                 sleep(1000);
 
                 strafeLeft(.4,15);
-                arm.setPower(-.3);
+                servoArm.setPosition(0);
                 sleep(1000);
                 break;
             }
@@ -146,7 +146,7 @@ public class OpenCV extends HardwareMapTheRookies
                 sleep(1000);
 
 
-                arm.setPower(.35);
+                servoArm.setPosition(.7);
                 sleep(500);
                 hold();
                 sleep(500);
@@ -155,7 +155,7 @@ public class OpenCV extends HardwareMapTheRookies
                 strafeLeft(1,50);
 
 //                gyroTurn(.2,-95);
-                arm.setPower(-.3);
+                servoArm.setPosition(0);
                 sleep(500);
 
                 break;
