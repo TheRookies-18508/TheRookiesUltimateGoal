@@ -9,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Autonomous/TensorflowObjectTest_NEEDTOTEST.java
 <<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Autonomous/TensorflowObjectTest.java
 import org.firstinspires.ftc.teamcode.HardwareMap.HardwareMapTheRookies;
 import org.openftc.easyopencv.OpenCvCamera;
@@ -28,6 +29,9 @@ public class TensorflowObjectTest extends HardwareMapTheRookies {
     OpenCvCamera webcam;
 =======
 
+=======
+
+>>>>>>> c68f9a4510d593887e8b1ebf4e1f4da5845d07fa:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Autonomous/TensorflowObjectTest.java
 /**
  * This 2020-2021 OpMode illustrates the basics of using the TensorFlow Object Detection API to
  * determine the position of the Ultimate Goal game elements.
@@ -43,7 +47,10 @@ public class TensorflowObjectTest_NEEDTOTEST extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
     private static final String LABEL_FIRST_ELEMENT = "Quad";
     private static final String LABEL_SECOND_ELEMENT = "Single";
+<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Autonomous/TensorflowObjectTest_NEEDTOTEST.java
 >>>>>>> c68f9a4510d593887e8b1ebf4e1f4da5845d07fa:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Autonomous/TensorflowObjectTest_NEEDTOTEST.java
+=======
+>>>>>>> c68f9a4510d593887e8b1ebf4e1f4da5845d07fa:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Autonomous/TensorflowObjectTest.java
 
     /*
      * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
@@ -164,11 +171,15 @@ public class TensorflowObjectTest_NEEDTOTEST extends LinearOpMode {
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         tfodParameters.minResultConfidence = 0.8f;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
+<<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Autonomous/TensorflowObjectTest_NEEDTOTEST.java
 <<<<<<< HEAD:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Autonomous/TensorflowObjectTest.java
 //        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
         tfod.loadModelFromFile (TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT, LABEL_THIRD_ELEMENT);
 =======
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
 >>>>>>> c68f9a4510d593887e8b1ebf4e1f4da5845d07fa:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Autonomous/TensorflowObjectTest_NEEDTOTEST.java
+=======
+        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
+>>>>>>> c68f9a4510d593887e8b1ebf4e1f4da5845d07fa:TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Autonomous/TensorflowObjectTest.java
     }
 }
