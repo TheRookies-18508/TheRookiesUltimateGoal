@@ -68,7 +68,7 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
     public DcMotor bottomleft = null;
     public DcMotor bottomright = null;
     public DcMotorEx shooter = null;
-    public DcMotor arm = null;
+
     public double motorVelocity = 1790;
     public double tl;
     public double tr;
@@ -136,7 +136,6 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
         armServo = hardwareMap.servo.get("testservo");
         servoArm = hardwareMap.servo.get("servoArm");
 
-        arm = hardwareMap.get(DcMotor.class, "arm");
 
 //Threshold for Gyro turning so that we will not continuously attempt to reach an exact value
 
@@ -148,7 +147,6 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
         topright.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
         bottomleft.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
         bottomright.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
-        arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
 
         PID = new PID(kp,ki,kd,delay_ms);
 
@@ -193,7 +191,8 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
 
         imu.initialize(parameters);
 
-
+        servoArm.setPosition(0);
+        sleep(2000);
         servo1.setPosition(1);
     }
 
@@ -223,13 +222,15 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
 //        telemetry.addData("plant output: ", plantOutput);
 
 
-        arm.setPower(.35);
+//        arm.setPower(.35);
+        servoArm.setPosition(.7);
         sleep(500);
         hold();
         sleep(1000);
 
         strafeLeft(.4,15);
-        arm.setPower(-.3);
+//        arm.setPower(-.3);
+        servoArm.setPosition(0);
         sleep(1000);
         moveBackEncoder(.6, 29);
     }
@@ -644,7 +645,6 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
             topright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             bottomleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             bottomright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
 
             //  sleep(250);   // optional pause after each move

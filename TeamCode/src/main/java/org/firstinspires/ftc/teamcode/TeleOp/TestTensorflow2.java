@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -20,8 +20,9 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@TeleOp(name = "Concept: TensorFlow Object Detection Webcam")
-public class TensorflowObjectTest_NEEDTOTEST extends LinearOpMode {
+@TeleOp
+
+public class TestTensorflow2 extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
     private static final String LABEL_FIRST_ELEMENT = "Quad";
     private static final String LABEL_SECOND_ELEMENT = "Single";
@@ -40,6 +41,7 @@ public class TensorflowObjectTest_NEEDTOTEST extends LinearOpMode {
      */
     private static final String VUFORIA_KEY =
             "AUoddv7/////AAABmdWoNVXEg09hhZk3YZfGMFsTIhkh2VwDTgEzX3nY+SV3FEUMCG4pHDYTDBEWUdsa5GcOyqevJQaXXHHHuK+8bmSKuV/WcO1oY5KIkFWC0IeN6RSmDYhCoadHTDLnrWZVb4b374j02ABfwSJgZyiuyWUrr0tbbnX/rOaxBoZ1/TyPsV8y0staXPbJKftaWVs1sxdvatjEI4DbiiFaTc5Amjlff+gUrr8GcWL/iuWi2azs8Wpr1KU7VtmazWx5nKW1qrnQFmcSoorGN2PxTYdEPJ4Y5dfx5PWcBMk47/1cH8+nCdbrbIGl5Om+QmKgKy3OabwWz4O5jJuC4g+bEMT4UR2JTvblEP9RFjf1KSo4TdS2";
+
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
