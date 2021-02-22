@@ -10,6 +10,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -26,6 +27,7 @@ public class PIDF_Shooter extends LinearOpMode {
 
     public static boolean RUN_USING_ENCODER = false;
     public static boolean DEFAULT_GAINS = false;
+    public Servo servoShooter = null;
 
     public static double TESTING_SPEED = 0.9 * MOTOR_MAX_RPM;
 
@@ -44,6 +46,8 @@ public class PIDF_Shooter extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         // Change my id
         DcMotorEx myMotor = hardwareMap.get(DcMotorEx.class, "shooter");
+        servoShooter = hardwareMap.servo.get("Servo1");
+
         myMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         myMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
@@ -84,6 +88,10 @@ public class PIDF_Shooter extends LinearOpMode {
             }
 
             telemetry.update();
+        }
+
+        if (gamepad1.a){
+            shoot();
         }
     }
 
@@ -132,5 +140,12 @@ public class PIDF_Shooter extends LinearOpMode {
     public static double getMotorVelocityF() {
         // see https://docs.google.com/document/d/1tyWrXDfMidwYyP_5H4mZyVgaEswhOC35gvdmP-V-5hA/edit#heading=h.61g9ixenznbx
         return 32767 * 60.0 / (MOTOR_MAX_RPM * MOTOR_TICKS_PER_REV);
+    }
+
+    public void shoot(){
+        servoShooter.setPosition(1);
+        servoShooter.setPosition(0);
+        sleep(350);
+        servoShooter.setPosition(1);
     }
 }
