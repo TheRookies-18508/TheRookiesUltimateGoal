@@ -19,7 +19,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import com.acmerobotics.dashboard.FtcDashboard;
 
 
-@TeleOp (name = "ringDetector", group = "Tests")
+@TeleOp
 public class OPENCVNEWTEST extends LinearOpMode {
 
     OpenCvCamera webcam;
