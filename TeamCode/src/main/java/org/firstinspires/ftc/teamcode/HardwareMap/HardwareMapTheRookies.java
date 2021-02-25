@@ -1,6 +1,7 @@
 
 package org.firstinspires.ftc.teamcode.HardwareMap;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -20,43 +21,19 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-/**
- * This is NOT an opmode.
- <<<<<<< HEAD
- <<<<<<< HEAD
+import android.util.Log;
 
- *
- * This hardware class assumes the following device names have been configured on the robot:
- * CHAWKS:  Naming convention is camel case!
- *
- *          front
- *    (LF)--------(RF)
- *    |    robot   |
- *   (LB)--------(RB)
- *        back
- *
- =======
- =======
- >>>>>>> origin/r2_park
- * <p>
- * This hardware class assumes the following device names have been configured on the robot:
- * CHAWKS:  Naming convention is camel case!
- * <p>
- * front
- * (LF)--------(RF)
- * |    robot   |
- * (LB)--------(RB)
- * back
- * <p>
- <<<<<<< HEAD
- >>>>>>> origin/r1_park
- =======
- >>>>>>> origin/r2_park
- * Motor channel:  Left Front (LF) drive motor:        "topleft"
- * Motor channel:  Right Front (RF) drive motor:        "topright"
- * Motor channel:  Left Back (LB) drive motor:        "bottomleft"
- * Motor channel:  Right Back (RB) drive motor:        "bottomright"
- */
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.hardware.VoltageSensor;
+import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
+
+
+
 
 public abstract class HardwareMapTheRookies extends LinearOpMode
 {
@@ -69,6 +46,10 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
     public DcMotor bottomright = null;
     public DcMotorEx shooter = null;
 
+    public DcMotorEx intake = null;
+    public DcMotor intake2 = null;
+    public DcMotor intake3 = null;
+
     public double motorVelocity = 1790;
     public double tl;
     public double tr;
@@ -80,6 +61,10 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
     public Servo servoArm = null;
     static final double THRESHOLD = 1.5;
     BNO055IMU imu;
+
+    public boolean FLY_WHEEL = false;
+    public boolean INTAKE = false;
+    public double INTAKE_SPEED = .8;
 
     private double delay_ms = 20;
     private double initPoint = 0; //position we want oue encoder to start at
@@ -112,6 +97,29 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
     static final double WHEEL_DIAMETER_INCHES = 3.54331;     // For figuring circumference
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV) / (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double COUNTS_PER_INCH_BOTTOM = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION_BOTTOM) / (WHEEL_DIAMETER_INCHES * 3.1415);
+    public static double MOTOR_TICKS_PER_REV = 28;
+    public static double MOTOR_MAX_RPM = 5400;
+    public static double MOTOR_GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
+
+    public static boolean RUN_USING_ENCODER = true;
+    public static boolean DEFAULT_GAINS = true;
+    public Servo servoShooter = null;
+
+    public static double TESTING_SPEED = 0;
+
+    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(30, 0, 5, 15);
+
+    public double lastKp = 0.0;
+    public double lastKi = 0.0;
+    public double lastKd = 0.0;
+    public double lastKf = getMotorVelocityF();
+
+    public double towerVelo = 3650;
+    public double powerVelo = 3500;
+
+    private FtcDashboard dashboard = FtcDashboard.getInstance();
+
+    private VoltageSensor batteryVoltageSensor;
   
 
     // Initialize standard Hardware interfaces
@@ -132,6 +140,9 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
         bottomleft = hwMap.get(DcMotor.class, "bottomleft");
         bottomright = hwMap.get(DcMotor.class, "bottomright");
         shooter = hardwareMap.get(DcMotorEx.class, "shooter");
+        intake = hardwareMap.get(DcMotorEx.class, "intake");
+        intake2 = hardwareMap.get(DcMotor.class, "intake2");
+        intake3 = hardwareMap.get(DcMotorEx.class, "intake3");
         servo1 = hardwareMap.servo.get("Servo1");
         armServo = hardwareMap.servo.get("testservo");
         servoArm = hardwareMap.servo.get("servoArm");
@@ -148,7 +159,22 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
         bottomleft.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
         bottomright.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
 
+        intake.setDirection(DcMotor.Direction.FORWARD);
+        intake2.setDirection(DcMotor.Direction.FORWARD);
+
         PID = new PID(kp,ki,kd,delay_ms);
+
+        shooter.setDirection(DcMotorSimple.Direction.REVERSE);
+        shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        MotorConfigurationType motorConfigurationType = shooter.getMotorType().clone();
+        motorConfigurationType.setAchieveableMaxRPMFraction(1.0);
+        shooter.setMotorType(motorConfigurationType);
+
+        batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
+        setPIDFCoefficients(shooter, MOTOR_VELO_PID);
+
+        telemetry = new MultipleTelemetry(telemetry, dashboard.getTelemetry());
 
 
         // Set all motors to ZERO! power
@@ -178,6 +204,9 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
         topright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
 
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -194,6 +223,9 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
         servoArm.setPosition(0);
         sleep(2000);
         servo1.setPosition(1);
+
+        FLY_WHEEL = false;
+        INTAKE = false;
     }
 
     /*
@@ -258,11 +290,35 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
         servo1.setPosition(.85);
     }
     public void shootAll(){
-        for (int i = 0; i <= 2; i++) {
+        for (int i = 0; i <= 3; i++) {
             shoot(1);
-            sleep(700);
+            sleep(1000);
         }
         sleep(200);
+    }
+
+    public void shootAllPID(){
+
+        for (int i = 0; i <= 3; i++) {
+            shootOne();
+            sleep(400);
+        }
+
+        setVelocity(shooter, TESTING_SPEED);
+
+        printVelocity(shooter, TESTING_SPEED);
+
+        if (lastKp != MOTOR_VELO_PID.p || lastKi != MOTOR_VELO_PID.i || lastKd != MOTOR_VELO_PID.d || lastKf != MOTOR_VELO_PID.f) {
+            setPIDFCoefficients(shooter, MOTOR_VELO_PID);
+
+            lastKp = MOTOR_VELO_PID.p;
+            lastKi = MOTOR_VELO_PID.i;
+            lastKd = MOTOR_VELO_PID.d;
+            lastKf = MOTOR_VELO_PID.f;
+
+        }
+
+        telemetry.update();
     }
 
     public void shootTop(){
@@ -271,7 +327,8 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
         gyroTurn(.5,-3.7);
         shooter.setVelocity(motorVelocity);
         sleep(1000);
-        shootAll();
+        //shootAll();
+        shootAllPID();
         sleep(200);
         shooter.setVelocity(0);
         gyroTurn(.5,3.7);
@@ -686,4 +743,112 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
         topright.setPower(0);
         bottomright.setPower(0);
     }
+
+
+
+    //PID Stuff
+    public void printVelocity(DcMotorEx motor, double target) {
+        //telemetry.addData("targetVelocity", rpmToTicksPerSecond(target));
+
+        double motorVelo = motor.getVelocity();
+//        telemetry.addData("velocity", motorVelo);
+//        telemetry.addData("error", rpmToTicksPerSecond(target) - motorVelo);
+//
+//        telemetry.addData("upperBound", rpmToTicksPerSecond(TESTING_SPEED) * 1.15);
+//        telemetry.addData("lowerBound", 0);
+    }
+
+    public void setVelocity(DcMotorEx motor, double power) {
+        if(RUN_USING_ENCODER) {
+            motor.setVelocity(rpmToTicksPerSecond(power));
+            Log.i("mode", "setting velocity");
+        }
+        else {
+            Log.i("mode", "setting power");
+            motor.setPower(power / MOTOR_MAX_RPM);
+        }
+    }
+
+    public void setPIDFCoefficients(DcMotorEx motor, PIDFCoefficients coefficients) {
+        if(!RUN_USING_ENCODER) {
+            Log.i("config", "skipping RUE");
+            return;
+        }
+
+        if (!DEFAULT_GAINS) {
+            Log.i("config", "setting custom gains");
+            motor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(
+                    coefficients.p, coefficients.i, coefficients.d, coefficients.f * 12 / batteryVoltageSensor.getVoltage()
+            ));
+        } else {
+            Log.i("config", "setting default gains");
+        }
+    }
+
+    public static double rpmToTicksPerSecond(double rpm) {
+        return rpm * MOTOR_TICKS_PER_REV / MOTOR_GEAR_RATIO / 60;
+    }
+
+    public static double getMotorVelocityF() {
+        // see https://docs.google.com/document/d/1tyWrXDfMidwYyP_5H4mZyVgaEswhOC35gvdmP-V-5hA/edit#heading=h.61g9ixenznbx
+        return 32767 * 60.0 / (MOTOR_MAX_RPM * MOTOR_TICKS_PER_REV);
+    }
+
+    public void PID_Shooter_Acticvate(){
+//        if (isStopRequested()) return;
+
+//        while (!isStopRequested()) {
+
+            setVelocity(shooter, TESTING_SPEED);
+
+            printVelocity(shooter, TESTING_SPEED);
+
+            if (lastKp != MOTOR_VELO_PID.p || lastKi != MOTOR_VELO_PID.i || lastKd != MOTOR_VELO_PID.d || lastKf != MOTOR_VELO_PID.f) {
+                setPIDFCoefficients(shooter, MOTOR_VELO_PID);
+
+                lastKp = MOTOR_VELO_PID.p;
+                lastKi = MOTOR_VELO_PID.i;
+                lastKd = MOTOR_VELO_PID.d;
+                lastKf = MOTOR_VELO_PID.f;
+
+            }
+
+            telemetry.update();
+        }
+
+
+//    }
+
+
+    public void intakeOn(){
+        INTAKE = true;
+        intake.setPower(1);
+        intake2.setPower(-1);
+        intake3.setPower(1);
+        TESTING_SPEED = -2000;
+        INTAKE = true;
+    }
+
+    public void intakeOff(){
+        INTAKE = false;
+        intake.setPower(0);
+        intake2.setPower(0);
+        intake3.setPower(0);
+        shooter.setVelocity(0);
+        FLY_WHEEL = false;
+        TESTING_SPEED = 0;
+    }
+
+    public void shooterOn(double power){
+        TESTING_SPEED = power;
+        FLY_WHEEL = true;
+    }
+
+    public void shooterOff(){
+        shooter.setPower(0);
+        TESTING_SPEED = 0;
+        FLY_WHEEL = false;
+    }
+
+
 }
