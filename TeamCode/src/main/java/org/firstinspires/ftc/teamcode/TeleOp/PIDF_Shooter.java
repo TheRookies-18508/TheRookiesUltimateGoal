@@ -25,13 +25,13 @@ public class PIDF_Shooter extends LinearOpMode {
     public static double MOTOR_MAX_RPM = 5400;
     public static double MOTOR_GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
 
-    public static boolean RUN_USING_ENCODER = false;
-    public static boolean DEFAULT_GAINS = false;
+    public static boolean RUN_USING_ENCODER = true;
+    public static boolean DEFAULT_GAINS = true;
     public Servo servoShooter = null;
 
     public static double TESTING_SPEED = 0.9 * MOTOR_MAX_RPM;
 
-    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(30, 0, 2, 15);
+    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(30, 0, 5, 15);
 
     private double lastKp = 0.0;
     private double lastKi = 0.0;
@@ -71,9 +71,22 @@ public class PIDF_Shooter extends LinearOpMode {
 
         waitForStart();
 
+
+
+
         if (isStopRequested()) return;
 
         while (!isStopRequested()) {
+            if (gamepad1.a){
+                shoot();
+            }
+
+            if (gamepad1.y){
+                for (int i = 0; i <= 3; i++) {
+                    shoot();
+                    sleep(400);
+                }
+            }
             setVelocity(myMotor, TESTING_SPEED);
 
             printVelocity(myMotor, TESTING_SPEED);
@@ -85,14 +98,13 @@ public class PIDF_Shooter extends LinearOpMode {
                 lastKi = MOTOR_VELO_PID.i;
                 lastKd = MOTOR_VELO_PID.d;
                 lastKf = MOTOR_VELO_PID.f;
+
             }
 
             telemetry.update();
         }
 
-        if (gamepad1.a){
-            shoot();
-        }
+
     }
 
     private void printVelocity(DcMotorEx motor, double target) {
