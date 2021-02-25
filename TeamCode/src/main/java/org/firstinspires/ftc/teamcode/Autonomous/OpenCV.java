@@ -103,12 +103,13 @@ public class OpenCV extends HardwareMapTheRookies
             if ((pipeline.position.toString()) == "NONE" && (pipeline.getAnalysis() > 0)){
                 telemetry.addData("Ring Pos", "NONE");
                 telemetry.update();
+                TESTING_SPEED = powerVelo;
                 shootTop();
                 moveForwardEncoder(1, 3);//.7
                 sleep(1000);
                 strafeRightEncoder(1, 12);//.5
-                gyroTurn(1, 30);//.2
                 sleep(1000);
+                gyroTurn(.2,3);
                 sleep(1000);
 
 
@@ -126,9 +127,9 @@ public class OpenCV extends HardwareMapTheRookies
                 telemetry.addData("Ring Pos", "ONE");
                 telemetry.update();
                 shootTop();
-                moveForwardEncoder(.4, 24);
+                moveForwardEncoder(.4, 22);//.4
                 sleep(1000);
-                strafeLeft(.4,8);
+                strafeLeft(.4,12);//.4
                 sleep(1000);
                 dropWobble_park();
 
@@ -152,7 +153,7 @@ public class OpenCV extends HardwareMapTheRookies
                 sleep(500);
                 moveForwardEncoder(.5, 10);
                 sleep(100);
-                strafeLeft(1,50);
+                strafeLeft(1,49);
 
 //                gyroTurn(.2,-95);
                 servoArm.setPosition(0);
