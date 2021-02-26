@@ -98,20 +98,13 @@ public class OpenCvTest extends HardwareMapTheRookies
             telemetry.update();
             sleep(500);
 
-//            if ((pipeline.position.toString()) == "NONE" && (pipeline.getAnalysis() > 0)){
-//                telemetry.addData("Ring Pos", "NONE");
-//                telemetry.update();
-//                shootTop();
-//                moveForwardEncoder(.7, 42);
-//                sleep(1000);
-//                strafeRightEncoder(.5, 18);
-//                gyroTurn(.2, 30);
-//                sleep(1000);
-//                sleep(1000);
-//                dropWobble_park();
-//                moveBackEncoder(.8, 4);
-//                break;
-//            }
+            if ((pipeline.position.toString()) == "NONE" && (pipeline.getAnalysis() > 0)){
+                telemetry.addData("Ring Pos", "NONE");
+                telemetry.update();
+                shootTop();
+
+                break;
+            }
 //            else if ((pipeline.position.toString()) == "ONE" && (pipeline.getAnalysis()>0)){
 //                telemetry.addData("Ring Pos", "ONE");
 //                telemetry.update();
