@@ -100,10 +100,10 @@ public class OpenCV extends HardwareMapTheRookies
             sleep(500);
             telemetry.addData("Number of Rings", pipeline.position);
             telemetry.update();
+            //TESTING_SPEED = 3600;
             if ((pipeline.position.toString()) == "NONE" && (pipeline.getAnalysis() > 0)){
                 telemetry.addData("Ring Pos", "NONE");
                 telemetry.update();
-                TESTING_SPEED = powerVelo;
                 shootTop();
                 moveForwardEncoder(1, 3);//.7
                 sleep(1000);
@@ -139,7 +139,7 @@ public class OpenCV extends HardwareMapTheRookies
                 telemetry.addData("Ring Pos", "four");
                 telemetry.update();
                 shootTop();
-                moveForwardEncoder(.7, 48);
+                moveForwardEncoder(.7, 35);
                 sleep(1000);
                 strafeRightEncoder(.5, 17);
                 gyroTurn(.4, 49);
@@ -151,7 +151,8 @@ public class OpenCV extends HardwareMapTheRookies
                 sleep(500);
                 hold();
                 sleep(500);
-                moveForwardEncoder(.5, 10);
+
+                moveForwardEncoder(.5, 8);
                 sleep(100);
                 strafeLeft(1,49);
 
