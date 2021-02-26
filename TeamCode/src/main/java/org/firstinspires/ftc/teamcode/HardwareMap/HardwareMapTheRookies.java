@@ -115,7 +115,7 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
     public double lastKf = getMotorVelocityF();
 
     public double towerVelo = 3650;
-    public double powerVelo = 3500;
+    public double powerVelo = 3200;
 
     private FtcDashboard dashboard = FtcDashboard.getInstance();
 
@@ -283,16 +283,17 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
         }
     }
 
-    public void shootOne(){
-        servo1.setPosition(.85);
+    public void  shootOne(){
+        servo1.setPosition(1);
         servo1.setPosition(0);
         sleep(350);
-        servo1.setPosition(.85);
+        servo1.setPosition(1);
     }
     public void shootAll(){
+        sleep(300);
         for (int i = 0; i <= 3; i++) {
             shoot(1);
-            sleep(1000);
+            sleep(500);
         }
         sleep(200);
     }
@@ -301,12 +302,12 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
 
         for (int i = 0; i <= 3; i++) {
             shootOne();
-            sleep(400);
+            sleep(700);
         }
 
         setVelocity(shooter, TESTING_SPEED);
 
-        printVelocity(shooter, TESTING_SPEED);
+        //printVelocity(shooter, TESTING_SPEED);
 
         if (lastKp != MOTOR_VELO_PID.p || lastKi != MOTOR_VELO_PID.i || lastKd != MOTOR_VELO_PID.d || lastKf != MOTOR_VELO_PID.f) {
             setPIDFCoefficients(shooter, MOTOR_VELO_PID);
@@ -322,13 +323,15 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
     }
 
     public void shootTop(){
+        //TESTING_SPEED = towerVelo;
         moveForwardEncoder(.3,59);
         sleep(300);
         gyroTurn(.5,-3.7);
-        shooter.setVelocity(motorVelocity);
-        sleep(1000);
-        //shootAll();
-        shootAllPID();
+        shooter.setVelocity(motorVelocity - 150);
+        sleep(700);
+        if (shooter.getVelocity() > 600){
+            shootAll();
+        }
         sleep(200);
         shooter.setVelocity(0);
         gyroTurn(.5,3.7);
@@ -760,28 +763,28 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
 
     public void setVelocity(DcMotorEx motor, double power) {
         if(RUN_USING_ENCODER) {
-            motor.setVelocity(rpmToTicksPerSecond(power));
-            Log.i("mode", "setting velocity");
+            shooter.setVelocity(rpmToTicksPerSecond(power));
+            //Log.i("mode", "setting velocity");
         }
         else {
-            Log.i("mode", "setting power");
-            motor.setPower(power / MOTOR_MAX_RPM);
+            //Log.i("mode", "setting power");
+            shooter.setPower(power / MOTOR_MAX_RPM);
         }
     }
 
     public void setPIDFCoefficients(DcMotorEx motor, PIDFCoefficients coefficients) {
         if(!RUN_USING_ENCODER) {
-            Log.i("config", "skipping RUE");
+            //Log.i("config", "skipping RUE");
             return;
         }
 
         if (!DEFAULT_GAINS) {
-            Log.i("config", "setting custom gains");
-            motor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(
+            //Log.i("config", "setting custom gains");
+            shooter.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(
                     coefficients.p, coefficients.i, coefficients.d, coefficients.f * 12 / batteryVoltageSensor.getVoltage()
             ));
         } else {
-            Log.i("config", "setting default gains");
+            //Log.i("config", "setting default gains");
         }
     }
 
@@ -801,7 +804,7 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
 
             setVelocity(shooter, TESTING_SPEED);
 
-            printVelocity(shooter, TESTING_SPEED);
+            //printVelocity(shooter, TESTING_SPEED);
 
             if (lastKp != MOTOR_VELO_PID.p || lastKi != MOTOR_VELO_PID.i || lastKd != MOTOR_VELO_PID.d || lastKf != MOTOR_VELO_PID.f) {
                 setPIDFCoefficients(shooter, MOTOR_VELO_PID);
