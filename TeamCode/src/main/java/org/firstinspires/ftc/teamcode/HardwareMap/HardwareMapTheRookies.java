@@ -326,18 +326,17 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
         //TESTING_SPEED = towerVelo;
         moveForwardEncoder(.3,59);
         sleep(300);
-        gyroTurn(.5,-3.7);
-        shooter.setVelocity(motorVelocity - 150);
+        gyroTurn(.7,-3.7);
+        shooter.setVelocity(motorVelocity);
         sleep(700);
         if (shooter.getVelocity() > 600){
             shootAll();
         }
         sleep(200);
-        shooter.setVelocity(0);
         gyroTurn(.5,3.7);
         sleep(200);
         moveForwardEncoder(.5,16);
-
+        shooter.setVelocity(0);
     }
 
 
