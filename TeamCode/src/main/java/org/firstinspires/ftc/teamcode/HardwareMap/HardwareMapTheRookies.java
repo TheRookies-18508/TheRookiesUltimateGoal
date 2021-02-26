@@ -329,7 +329,9 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
         gyroTurn(.7,-3.7);
         shooter.setVelocity(motorVelocity);
         sleep(700);
-        if (shooter.getVelocity() > 600){
+        telemetry.addData("Shooter Velo", shooter.getVelocity());
+        telemetry.update();
+        if (shooter.getVelocity() > 800){
             shootAll();
         }
         sleep(200);
