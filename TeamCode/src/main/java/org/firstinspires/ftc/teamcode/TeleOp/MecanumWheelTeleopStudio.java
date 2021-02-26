@@ -70,7 +70,7 @@ public class MecanumWheelTeleopStudio extends HardwareMapTheRookies{
 
 
         init(hardwareMap);
-
+        TESTING_SPEED = 0;
 
         /*
         /makes the intake the front of the robot
@@ -120,7 +120,6 @@ public class MecanumWheelTeleopStudio extends HardwareMapTheRookies{
             bottomright.setPower((-pivot + vertical + (horiz1 * 1.3)) / 2);
             topleft.setPower((pivot + vertical + (horiz1 * 1.55)));
             bottomleft.setPower((pivot + (vertical - (horiz1 * 1.3))) / 2);
-            PID_Shooter_Acticvate();
             //intake
             if (gamepad1.right_trigger > .2) {
                 intakeOn();
@@ -160,7 +159,8 @@ public class MecanumWheelTeleopStudio extends HardwareMapTheRookies{
             if (gamepad1.right_bumper) {
 
                 shooterOn(towerVelo);
-                intakeOff();
+                TESTING_SPEED = towerVelo;
+                //intakeOff();
 
             } else if (gamepad1.left_bumper) {
                 shooterOff();
@@ -266,6 +266,7 @@ public class MecanumWheelTeleopStudio extends HardwareMapTheRookies{
             telemetry.addData("Intake Status", INTAKE);
             telemetry.addData("Shooter Servo Position", servo1.getPosition());
             telemetry.addData("Runtime", "%.03f", getRuntime());
+            telemetry.addData("Motor Speed", TESTING_SPEED);
 
 
             telemetry.update();
@@ -280,9 +281,24 @@ public class MecanumWheelTeleopStudio extends HardwareMapTheRookies{
                     sleep(400);
                 }
             }
+            setVelocity(shooter, TESTING_SPEED);
 
+            //printVelocity(shooter, TESTING_SPEED);
 
+            if (lastKp != MOTOR_VELO_PID.p || lastKi != MOTOR_VELO_PID.i || lastKd != MOTOR_VELO_PID.d || lastKf != MOTOR_VELO_PID.f) {
+                setPIDFCoefficients(shooter, MOTOR_VELO_PID);
+
+                lastKp = MOTOR_VELO_PID.p;
+                lastKi = MOTOR_VELO_PID.i;
+                lastKd = MOTOR_VELO_PID.d;
+                lastKf = MOTOR_VELO_PID.f;
+
+            }
+
+            //telemetry.update();
         }
+
+
     }
 
 }
