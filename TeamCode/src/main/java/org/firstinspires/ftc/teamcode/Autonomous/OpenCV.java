@@ -25,7 +25,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 
 import com.acmerobotics.dashboard.FtcDashboard;
-//this is america
 
 
 
