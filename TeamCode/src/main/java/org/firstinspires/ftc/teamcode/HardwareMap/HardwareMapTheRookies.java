@@ -825,7 +825,7 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
 
     public void intakeOn(){
         INTAKE = true;
-        intake.setPower(1);
+        intake.setPower(.86);
         intake2.setPower(-1);
         intake3.setPower(1);
         TESTING_SPEED = -2000;
