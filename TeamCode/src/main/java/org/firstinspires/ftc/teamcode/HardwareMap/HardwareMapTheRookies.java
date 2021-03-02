@@ -102,7 +102,7 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
     public static double MOTOR_GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
 
     public static boolean RUN_USING_ENCODER = true;
-    public static boolean DEFAULT_GAINS = true;
+    public static boolean DEFAULT_GAINS = false;
     public Servo servoShooter = null;
 
     public static double TESTING_SPEED = 0;
@@ -114,7 +114,7 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
     public double lastKd = 0.0;
     public double lastKf = getMotorVelocityF();
 
-    public double towerVelo = 3650;
+    public double towerVelo = 3720;
     public double powerVelo = 3200;
 
     private FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -829,7 +829,7 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
         intake.setPower(.86);
         intake2.setPower(-1);
         intake3.setPower(1);
-        TESTING_SPEED = -2000;
+        TESTING_SPEED = -4000;
         INTAKE = true;
     }
 

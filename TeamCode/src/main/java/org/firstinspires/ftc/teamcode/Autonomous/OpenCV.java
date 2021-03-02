@@ -120,6 +120,7 @@ public class OpenCV extends HardwareMapTheRookies
                 strafeLeft(1,15);//.5
                 servoArm.setPosition(0);
                 sleep(1000);
+                gyroTurn(.5,160);
                 break;
             }
             else if ((pipeline.position.toString()) == "ONE" && (pipeline.getAnalysis()>0)){
