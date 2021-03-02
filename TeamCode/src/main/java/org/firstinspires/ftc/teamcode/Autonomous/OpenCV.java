@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+    package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -143,7 +143,6 @@ public class OpenCV extends HardwareMapTheRookies
                 sleep(1000);
                 strafeRightEncoder(.5, 17);
                 gyroTurn(.4, 49);
-                sleep(1000);
                 sleep(1000);
 
 
