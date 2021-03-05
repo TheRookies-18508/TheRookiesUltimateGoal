@@ -107,8 +107,13 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
 
     public static double TESTING_SPEED = 0;
 
-    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(30, 0, 5, 15);
+    public static double p = 30;
+    public static double i = 0;
+    public static double d = 5;
+    public static double f = 15;
 
+    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(p, i, d, f);
+    
     public double lastKp = 0.0;
     public double lastKi = 0.0;
     public double lastKd = 0.0;

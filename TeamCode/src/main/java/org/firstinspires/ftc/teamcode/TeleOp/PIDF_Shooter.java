@@ -26,12 +26,17 @@ public class PIDF_Shooter extends LinearOpMode {
     public static double MOTOR_GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
 
     public static boolean RUN_USING_ENCODER = true;
-    public static boolean DEFAULT_GAINS = true;
+    public static boolean DEFAULT_GAINS = false;
     public Servo servoShooter = null;
 
-    public static double TESTING_SPEED = 0.9 * MOTOR_MAX_RPM;
+    public static double TESTING_SPEED = 3720;
 
-    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(30, 0, 5, 15);
+    public static double p = 30;
+    public static double i = 0;
+    public static double d = 5;
+    public static double f = 15;
+
+    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(p, i, d, f);
 
     private double lastKp = 0.0;
     private double lastKi = 0.0;
