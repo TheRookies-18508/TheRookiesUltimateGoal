@@ -2,20 +2,20 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotorControllerEx;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
-import com.qualcomm.robotcore.util.Range;
-import com.qualcomm.robotcore.hardware.Servo;
+//import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+//import com.qualcomm.robotcore.hardware.CRServo;
+//import com.qualcomm.robotcore.hardware.DcMotorControllerEx;
+//import com.qualcomm.robotcore.hardware.DcMotorEx;
+//import com.qualcomm.robotcore.hardware.DcMotorSimple;
+//import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+//import com.qualcomm.robotcore.util.Range;
+//import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.ElapsedTime;
+//import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.ServoImplEx;
-import com.qualcomm.robotcore.hardware.PIDCoefficients;
+//import com.qualcomm.robotcore.hardware.DcMotor;
+//import com.qualcomm.robotcore.hardware.ServoImplEx;
+//import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import org.firstinspires.ftc.teamcode.HardwareMap.HardwareMapTheRookies;
 
 
@@ -39,24 +39,21 @@ public class MecanumWheelTeleopStudio extends HardwareMapTheRookies{
     public double horiz4;
     public double pivot;
 
-    public double servoInitPos = 1;
-    public double servoEndPos = 0;
-    public static final double NEW_P = 1.17;
-    public static final double NEW_I = 0.117;
-    public static final double NEW_D = 0;
-    public static final double NEW_F = 11.7;
+
+
+    public double topRightSum = 0;
+    public double bottomRightSum = 0;
+    public double topLeftSum = 0;
+    public double bottomLeftSum = 0;
 
 
 
 
     public void pullup(){
         servoArm.setPosition(.7);
-
-
     }
     public void setDown(){
         servoArm.setPosition(0);
-
     }
 
 
@@ -82,16 +79,6 @@ public class MecanumWheelTeleopStudio extends HardwareMapTheRookies{
 
 
 
-
-
-
-//        shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-
-
-
-        //MainArm.setPosition(MainArm_Home); // sets to starting position
-        //SideArm.setPosition(.85);
         FLY_WHEEL = false;
         INTAKE = false;
 
@@ -101,25 +88,12 @@ public class MecanumWheelTeleopStudio extends HardwareMapTheRookies{
         while (opModeIsActive()) {
 
 
-            double rightstickY = -gamepad1.right_stick_y;
-            double leftstickY = -gamepad1.left_stick_y;
-            double rightstickX = -gamepad1.right_stick_x;
-            double leftstickX = -gamepad1.left_stick_x;
-            double twoleftstickY = gamepad2.left_stick_y;
-            double twoleftstickX = -gamepad2.left_stick_x;
-            boolean rightbumper = gamepad1.right_bumper;
-            boolean leftbumper = gamepad1.left_bumper;
-
-
 
             vertical = -gamepad1.left_stick_y;
             horiz1 = gamepad1.right_stick_x; //strafing
             pivot = (-gamepad1.left_stick_x);
 
-            double topRightSum = 0;
-            double bottomRightSum = 0;
-            double topLeftSum = 0;
-            double bottomLeftSum = 0;
+
 
             if (horiz1 == 0){
                 topRightSum = (-pivot + (vertical - (horiz1)));
@@ -174,7 +148,6 @@ public class MecanumWheelTeleopStudio extends HardwareMapTheRookies{
 
             //shart shooter wheel
             double initVelocity = 1700;
-            double motorVelocity = 1750;
             double powershotVelocity = 1520;
 
             if (gamepad1.right_bumper) {
