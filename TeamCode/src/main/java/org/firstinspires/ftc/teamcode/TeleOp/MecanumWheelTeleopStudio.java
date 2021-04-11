@@ -95,23 +95,10 @@ public class MecanumWheelTeleopStudio extends HardwareMapTheRookies{
 
 
 
-            if (horiz1 == 0){
-                topRightSum = (-pivot + (vertical - (horiz1)));
-                bottomRightSum = (-pivot + vertical + (horiz1));
-                topLeftSum = (pivot + vertical + (horiz1));
-                bottomLeftSum = (pivot + (vertical - (horiz1)));
-            }
-            else if(horiz1 != 0){
-                topRightSum = (-pivot + (vertical - (horiz1 * .97)));
-                bottomRightSum = (-pivot + vertical + (horiz1 * 1.3)) / 2;
-                topLeftSum = (pivot + vertical + (horiz1 * 1.55));
-                bottomLeftSum = (pivot + (vertical - (horiz1 * 1.3))) / 2;
-            }
-
-            topright.setPower(topRightSum);
-            bottomright.setPower(bottomRightSum);
-            topleft.setPower(topLeftSum);
-            bottomleft.setPower(bottomLeftSum);
+            topright.setPower((-pivot + (vertical - (horiz1 * .97))));
+            bottomright.setPower((-pivot + vertical + (horiz1 * 1.3)) / 2);
+            topleft.setPower((pivot + vertical + (horiz1 * 1.55)));
+            bottomleft.setPower((pivot + (vertical - (horiz1 * 1.3))) / 2);
 
 
 

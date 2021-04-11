@@ -56,6 +56,7 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
     public double bl;
     public double br;
 
+    
     public Servo servo1 = null;
     public Servo armServo = null;
     public Servo servoArm = null;
@@ -198,16 +199,16 @@ public abstract class HardwareMapTheRookies extends LinearOpMode
 
         //bottomleft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //bottomright.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        bottomleft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bottomright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        bottomleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        bottomright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        topleft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        topright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        topleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        topright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        bottomleft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        bottomright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        bottomleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        bottomright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//
+//        topleft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        topright.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        topleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        topright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
